@@ -29,7 +29,20 @@ const FormWrapper = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 80%;
+  margin: 0 auto;
 `;
+
+const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+`;
+
+const HalfWidthField = styled(TextField)`
+  flex: 1;
+`;
+
 
 const Form = () => {
   const { register, handleSubmit, setValue } = useForm<FormData>();
@@ -57,38 +70,41 @@ const Form = () => {
 
   return (
     <FormWrapper onSubmit={handleSubmit(onSubmit)}>
-      <TextField {...register('nome')} label="Nome" variant="outlined" />
-      <TextField {...register('dataInicial')} label="Data Inicial" variant="outlined" type="datetime-local" InputLabelProps={{ shrink: true }} />
-      <TextField {...register('dataFinal')} label="Data Final" variant="outlined" type="datetime-local" InputLabelProps={{ shrink: true }} />
-      <FormControl variant="outlined">
-        <InputLabel id="propriedade-label">Propriedade</InputLabel>
-        <Select {...register('infosPropriedade.id')} labelId="propriedade-label" label="Propriedade" onChange={(e) => {
-          const selectedPropriedade = propriedades.find(p => p.id === e.target.value);
-          if (selectedPropriedade) {
-            setValue('infosPropriedade', selectedPropriedade);
-          }
-        }}>
-          {propriedades.map((propriedade) => (
-            <MenuItem key={propriedade.id} value={propriedade.id}>{propriedade.nome}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <TextField {...register('cnpj')} label="CNPJ" variant="outlined" />
-      <FormControl variant="outlined">
-        <InputLabel id="laboratorio-label">Laboratório</InputLabel>
-        <Select {...register('laboratorio.id')} labelId="laboratorio-label" label="Laboratório" onChange={(e) => {
-          const selectedLaboratorio = laboratorios.find(l => l.id === e.target.value);
-          if (selectedLaboratorio) {
-            setValue('laboratorio', selectedLaboratorio);
-          }
-        }}>
-          {laboratorios.map((laboratorio) => (
-            <MenuItem key={laboratorio.id} value={laboratorio.id}>{laboratorio.nome}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <TextField {...register('observacoes')} label="Observações" variant="outlined" multiline rows={4} />
-      <Button type="submit" variant="contained" color="primary">Enviar</Button>
+      <Row>
+        <HalfWidthField {...register('nome')} label="Nome" variant="standard" />
+        <HalfWidthField {...register('dataInicial')} label="Data Inicial" variant="standard" type="date" InputLabelProps={{ shrink: true }} style={{'width':'40px'}}/>
+        <HalfWidthField {...register('dataFinal')} label="Data Final" variant="standard" type="date" InputLabelProps={{ shrink: true }} />
+      </Row>
+      <Row>
+        <FormControl variant="standard" style={{ flex: 1 }}>
+          <InputLabel id="propriedade-label">Propriedade</InputLabel>
+          <Select {...register('infosPropriedade.id')} labelId="propriedade-label" label="Propriedade" onChange={(e) => {
+            const selectedPropriedade = propriedades.find(p => p.id === e.target.value);
+            if (selectedPropriedade) {
+              setValue('infosPropriedade', selectedPropriedade);
+            }
+          }}>
+            {propriedades.map((propriedade) => (
+              <MenuItem key={propriedade.id} value={propriedade.id}>{propriedade.nome}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl variant="standard" style={{ flex: 1 }}>
+          <InputLabel id="laboratorio-label">Laboratório</InputLabel>
+          <Select {...register('laboratorio.id')} labelId="laboratorio-label" label="Laboratório" onChange={(e) => {
+            const selectedLaboratorio = laboratorios.find(l => l.id === e.target.value);
+            if (selectedLaboratorio) {
+              setValue('laboratorio', selectedLaboratorio);
+            }
+          }}>
+            {laboratorios.map((laboratorio) => (
+              <MenuItem key={laboratorio.id} value={laboratorio.id}>{laboratorio.nome}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Row>
+      <TextField {...register('observacoes')} label="Observações" variant="standard" multiline rows={4} fullWidth />
+      <Button type="submit" variant="contained" color="primary">Salvar</Button>
     </FormWrapper>
   );
 };
